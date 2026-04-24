@@ -6,7 +6,7 @@ const SECRET = new TextEncoder().encode(process.env.JWT_SECRET || "aziz-secret-k
 
 const publicPaths = ["/login", "/api/auth/login"];
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   if (publicPaths.some((p) => pathname.startsWith(p))) {
