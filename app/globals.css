@@ -50,3 +50,30 @@ body {
   user-select: none;
   filter: drop-shadow(0 4px 8px rgba(0,0,0,0.15));
 }
+
+@keyframes streakFall {
+  0% {
+    transform: translateY(-40px) translateX(0) rotate(var(--rot));
+    opacity: 1;
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(110vh) translateX(var(--drift)) rotate(calc(var(--rot) + 720deg));
+    opacity: 0;
+  }
+}
+
+.streak {
+  position: fixed;
+  top: -20px;
+  width: var(--w);
+  height: var(--h);
+  background: var(--color);
+  border-radius: 2px;
+  animation: streakFall var(--duration) ease-in forwards;
+  animation-delay: var(--delay);
+  pointer-events: none;
+  opacity: 0;
+}

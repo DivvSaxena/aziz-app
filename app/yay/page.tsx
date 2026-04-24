@@ -82,7 +82,12 @@ function playExcitingSound() {
 }
 
 const BALLOON_EMOJIS = ["🎈", "🎈", "🎈", "🎉", "🎊", "🎈", "🎈"];
-const COLORS = ["red", "blue", "yellow", "pink", "purple", "orange", "green"];
+
+const STREAK_COLORS = [
+  "#FF4B6E", "#FF8C00", "#FFD700", "#00C853",
+  "#00B0FF", "#AA00FF", "#FF69B4", "#00E5FF",
+  "#AEEA00", "#FF6D00", "#D500F9", "#1DE9B6",
+];
 
 function generateBalloons(count: number) {
   return Array.from({ length: count }, (_, i) => ({
@@ -92,13 +97,27 @@ function generateBalloons(count: number) {
     delay: `${Math.random() * 1.2}s`,
     duration: `${3.5 + Math.random() * 2}s`,
     sway: `${(Math.random() - 0.5) * 80}px`,
-    color: COLORS[i % COLORS.length],
+  }));
+}
+
+function generateStreaks(count: number) {
+  return Array.from({ length: count }, (_, i) => ({
+    id: i,
+    left: `${Math.random() * 100}%`,
+    delay: `${Math.random() * 2}s`,
+    duration: `${2 + Math.random() * 2}s`,
+    color: STREAK_COLORS[i % STREAK_COLORS.length],
+    rot: `${Math.random() * 360}deg`,
+    drift: `${(Math.random() - 0.5) * 120}px`,
+    w: Math.random() > 0.5 ? `${6 + Math.random() * 6}px` : `${14 + Math.random() * 10}px`,
+    h: Math.random() > 0.5 ? `${18 + Math.random() * 16}px` : `${8 + Math.random() * 6}px`,
   }));
 }
 
 export default function YayPage() {
   const router = useRouter();
   const [balloons] = useState(() => generateBalloons(18));
+  const [streaks] = useState(() => generateStreaks(60));
 
   useEffect(() => {
     playExcitingSound();
@@ -106,6 +125,24 @@ export default function YayPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 to-emerald-100 flex items-center justify-center overflow-hidden relative">
+      {/* Streaks / confetti */}
+      {streaks.map((s) => (
+        <div
+          key={s.id}
+          className="streak"
+          style={{
+            left: s.left,
+            "--delay": s.delay,
+            "--duration": s.duration,
+            "--color": s.color,
+            "--rot": s.rot,
+            "--drift": s.drift,
+            "--w": s.w,
+            "--h": s.h,
+          } as React.CSSProperties}
+        />
+      ))}
+
       {/* Balloons */}
       {balloons.map((b) => (
         <span
